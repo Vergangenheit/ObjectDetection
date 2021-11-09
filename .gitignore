@@ -3,6 +3,7 @@ venv
 mask_rcnn_coco.h5
 *.h5
 kangaroo
+amr
 .idea
 */__pycache__
 *.pyc
