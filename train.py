@@ -1,14 +1,14 @@
-from config import KangarooConfig
+from config import KangarooConfig, AnalogConfig
 from mrcnn.model import MaskRCNN
 from mrcnn.utils import Dataset
-from dataset import KangarooDataset
+from dataset import KangarooDataset, AnalogMeterDataset
 import os
 
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
 
 
-def train_model(train_set: KangarooDataset, test_set: KangarooDataset):
-    config = KangarooConfig()
+def train_model(train_set: AnalogMeterDataset, test_set: AnalogMeterDataset):
+    config = AnalogConfig()
     model = MaskRCNN(mode='training', model_dir='./', config=config)
     # load weights (mscoco) and exclude the output layers
     model.load_weights('mask_rcnn_coco.h5', by_name=True,
@@ -19,11 +19,11 @@ def train_model(train_set: KangarooDataset, test_set: KangarooDataset):
 
 if __name__ == "__main__":
     # prepare train set
-    train_set = KangarooDataset()
-    train_set.load_dataset('kangaroo', is_train=True)
+    train_set = AnalogMeterDataset()
+    train_set.load_dataset('amr', is_train=True)
     train_set.prepare()
     # prepare test/val set
-    test_set = KangarooDataset()
-    test_set.load_dataset('kangaroo', is_train=False)
+    test_set = AnalogMeterDataset()
+    test_set.load_dataset('amr', is_train=False)
     test_set.prepare()
     train_model(train_set, test_set)

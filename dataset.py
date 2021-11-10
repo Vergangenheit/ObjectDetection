@@ -84,7 +84,7 @@ class KangarooDataset(Dataset):
         return info['path']
 
 
-class AnalogMeter(Dataset):
+class AnalogMeterDataset(Dataset):
     def load_dataset(self, dataset_dir: str, is_train: bool = True):
         # define one class
         self.add_class("dataset", 1, "amr")
@@ -96,11 +96,13 @@ class AnalogMeter(Dataset):
         for filename in os.listdir(images_dir):
             # extract image id
             image_id: str = filename.split('.')[0].split('(')[-1].replace(')', '')
-            # skip all images after 150 if we are building the train set
+            # skip all images after 225 if we are building the train set
             if is_train and counter >= 225:
+                counter += 1
                 continue
-            # skip all images before 150 if we are building the test/val set
+            # skip all images before 225 if we are building the test/val set
             if not is_train and counter < 225:
+                counter += 1
                 continue
             img_path = images_dir + filename
             ann_path = annotations_dir + filename.replace('.jpg', '.xml')
@@ -158,11 +160,24 @@ class AnalogMeter(Dataset):
         return info['path']
 
 
+def test_lengths():
+    # train set
+    train_set = AnalogMeterDataset()
+    train_set.load_dataset('amr', is_train=True)
+    train_set.prepare()
+    print('Train: %d' % len(train_set.image_ids))
+
+    # test/val set
+    test_set = AnalogMeterDataset()
+    test_set.load_dataset('amr', is_train=False)
+    test_set.prepare()
+    print('Test: %d' % len(test_set.image_ids))
+
 
 
 def test_dataset():
     # train set
-    train_set = AnalogMeter()
+    train_set = AnalogMeterDataset()
     train_set.load_dataset('amr', is_train=True)
     train_set.prepare()
     # load an image
@@ -183,7 +198,7 @@ def test_dataset():
 
 def test_image_info():
     # train set
-    train_set = AnalogMeter()
+    train_set = AnalogMeterDataset()
     train_set.load_dataset('amr', is_train=True)
     train_set.prepare()
     # enumerate all images in the dataset
@@ -196,7 +211,7 @@ def test_image_info():
 
 def test_instances():
     # train set
-    train_set = AnalogMeter()
+    train_set = AnalogMeterDataset()
     train_set.load_dataset('amr', is_train=True)
     train_set.prepare()
     image_id = 101
