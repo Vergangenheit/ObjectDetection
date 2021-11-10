@@ -5,7 +5,7 @@ from mrcnn.config import Config
 from numpy import ndarray
 import numpy as np
 from typing import List, Dict
-from dataset import KangarooDataset
+from dataset import KangarooDataset, AnalogMeterDataset
 import os
 
 os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
@@ -44,13 +44,13 @@ def evaluate():
     # define model
     model = MaskRCNN(mode='inference', model_dir='./', config=cfg)
     # load weights
-    model.load_weights('./kangaroo_cfg/mask_rcnn_kangaroo_cfg_0005.h5', by_name=True)
-    train_set = KangarooDataset()
-    train_set.load_dataset('kangaroo', is_train=True)
+    model.load_weights('./amr_cfg/mask_rcnn_amr_cfg_0005.h5', by_name=True)
+    train_set = AnalogMeterDataset()
+    train_set.load_dataset('amr', is_train=True)
     train_set.prepare()
     # prepare test/val set
-    test_set = KangarooDataset()
-    test_set.load_dataset('kangaroo', is_train=False)
+    test_set = AnalogMeterDataset()
+    test_set.load_dataset('amr', is_train=False)
     test_set.prepare()
     # evaluate model on training dataset
     train_mAP: ndarray = evaluate_model(train_set, model, cfg)

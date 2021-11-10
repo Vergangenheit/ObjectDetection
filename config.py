@@ -21,7 +21,7 @@ class AnalogConfig(Config):
 
 class PredictionConfig(Config):
     # define the name of the configuration
-    NAME = "kangaroo_cfg"
+    NAME = "amr_cfg"
     # number of classes (background + kangaroo)
     NUM_CLASSES = 1 + 1
     # simplify GPU config

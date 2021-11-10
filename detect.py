@@ -1,5 +1,5 @@
 from mrcnn.utils import Dataset
-from dataset import KangarooDataset
+from dataset import KangarooDataset, AnalogMeterDataset
 from mrcnn.config import Config
 from mrcnn.model import mold_image, MaskRCNN
 from numpy import ndarray
@@ -25,6 +25,7 @@ def plot_actual_vs_predicted(dataset: Dataset, cfg: Config, model: MaskRCNN, n_i
         sample: ndarray = np.expand_dims(scaled_image, 0)
         # make prediction
         yhat: Dict = model.detect(sample, verbose=0)[0]
+        print(yhat['rois'].shape)
         # define subplot
         plt.subplot(n_images, 2, i * 2 + 1)
         # plot raw pixel data
